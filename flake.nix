@@ -1,5 +1,5 @@
 {
-  description = "go-htmx-alpinejs-tailwind-example";
+  description = "go-ssr-example";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
@@ -24,13 +24,16 @@
       in
       rec {
         devShell = pkgs.mkShell rec {
-          name = "go-htmx-alpinejs-tailwind-example";
+          name = "go-ssr-example";
 
           buildInputs = with pkgs; [
             go
             golangci-lint
             delve
+            yarn
+            nodejs
             gnumake
+            tmux
           ];
         };
       }

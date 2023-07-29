@@ -1,0 +1,4 @@
+/.direnv/
+/node_modules/
+/views/public/main.js
+/views/public/main.css

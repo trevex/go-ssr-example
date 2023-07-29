@@ -1,0 +1,136 @@
+{{define "base"}}
+  {{- if .HX.Partial -}}
+  <script>
+    document.title = "{{template "title" .}}"
+  </script>
+  {{- end -}}
+  {{- if not .HX.Partial -}}
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>{{template "title" .}}</title>
+      <script src="/public/main.js" defer></script>
+      <link rel="stylesheet" href="/public/main.css">
+      <link rel="icon" href="/public/favicon.svg" type="image/svg+xml">
+    </head>
+    <body>
+      <div class="progress h-5">
+        <div class="indeterminate bg-violet-900"></div>
+      </div>
+      <div class="min-h-screen flex flex-col md:flex-row">
+        <!-- Sidebar -->
+        <aside
+          x-data="{ open: true, pathname: location.pathname }"
+          @pushstate.window="pathname = location.pathname"
+          class="flex flex-col bg-violet-600 text-violet-100 md:w-64 md:overflow-y-auto">
+          <!-- Logo -->
+          <div class="flex-none px-2 py-4">
+            <div class="flex items-center justify-between">
+              <a href="#" class="flex items-center space-x-2 text-white">
+                <span class="text-2xl font-extrabold">
+                  example
+                </span>
+              </a>
+              <button @click="open = !open" class="rounded-lg md:hidden rounded-lg focus:outline-none focus:shadow-outline">
+                <span x-show="open">{{ embedHTML "close-icon.svg" }}</span>
+                <span x-show="!open">{{ embedHTML "menu-icon.svg" }}</span>
+              </button>
+            </div>
+          </div>
+          <!-- Menu -->
+          <nav class="grow px-2 py-6 md:block" :class="open ? 'block' : 'hidden'">
+            <div>
+              <a href="/"
+                 class="block flex py-2 px-4 hover:bg-violet-700 hover:text-white rounded transition duration-200"
+                 :class="(pathname === '' || pathname === '/') ? 'font-bold bg-violet-800' : ''"
+                 hx-get="/"
+                 hx-push-url="true"
+                 hx-indicator=".progress"
+                 hx-target="#content"
+                 hx-swap="innerHTML">
+                <span class="mr-2">{{ embedHTML "home-icon.svg" }}</span> Home
+              </a>
+            </div>
+            <div>
+              <a href="/devices/"
+                 class="block flex py-2 px-4 hover:bg-violet-700 hover:text-white rounded transition duration-200"
+                 :class="pathname.includes('/devices/') ? 'font-bold bg-violet-800' : ''"
+                 hx-get="/devices/"
+                 hx-push-url="true"
+                 hx-indicator=".progress"
+                 hx-target="#content"
+                 hx-swap="innerHTML">
+                <span class="mr-2">{{ embedHTML "device-icon.svg" }}</span> Devices
+              </a>
+            </div>
+            <div>
+              <a
+                  href="/network/"
+                  class="block flex py-2 px-4 hover:bg-violet-700 hover:text-white rounded transition duration-200"
+                  :class="pathname.includes('/network/') ? 'font-bold bg-violet-800' : ''"
+                  hx-get="/network/"
+                  hx-push-url="true"
+                  hx-indicator=".progress"
+                  hx-target="#content"
+                  hx-swap="innerHTML">
+                <span class="mr-2">{{ embedHTML "network-icon.svg" }}</span> Network
+              </a>
+            </div>
+            <div>
+              <a
+                  href="/firewall/"
+                  class="block flex py-2 px-4 hover:bg-violet-700 hover:text-white rounded transition duration-200"
+                  :class="pathname.includes('/firewall/') ? 'font-bold bg-violet-800' : ''"
+                  hx-get="/firewall/"
+                  hx-push-url="true"
+                  hx-indicator=".progress"
+                  hx-target="#content"
+                  hx-swap="innerHTML">
+                <span class="mr-2">{{ embedHTML "firewall-icon.svg" }}</span> Firewall
+              </a>
+            </div>
+            <div>
+              <a
+                  href="/settings/"
+                  class="block flex py-2 px-4 hover:bg-violet-700 hover:text-white rounded transition duration-200"
+                  :class="pathname.includes('/settings/') ? 'font-bold bg-violet-800' : ''"
+                  hx-get="/settings/"
+                  hx-push-url="true"
+                  hx-indicator=".progress"
+                  hx-target="#content"
+                  hx-swap="innerHTML">
+                <span class="mr-2">{{ embedHTML "settings-icon.svg" }}</span> Settings
+              </a>
+            </div>
+          </nav>
+          <!-- Footer -->
+          <div class="flex-none bg-violet-700 px-2 py-2 md:flex" :class='open ? "flex" : "hidden"'>
+            <div class="flex-shrink-1 grow min-w-0 px-2 py-2 break-words">
+              Logged in as {{.User.Email}}
+            </div>
+            <div class="flex-none">
+              <a href="#" class="flex h-full items-center bg-violet-800 px-4 py-2 rounded hover:bg-violet-900 hover:text-white transition duration-200">
+                {{ embedHTML "logout-icon.svg" }}
+              </a>
+            </div>
+          </div>
+        </aside >
+        <!-- Content -->
+        <div class="flex-1 px-10 bg-slate-50 flex flex-col grow">
+          <div id="content" class="grow py-10">
+    {{end}}
+            {{template "body" .}}
+    {{- if not .HX.Partial -}}
+          </div>
+          <footer class="flex-none pt-4 pb-2 text-sm text-center">
+            &copy; Copyright 2022, Ectobase. Made with <span class="text-lg">☕</span>.
+          </footer>
+        </div >
+      </div >
+    </body>
+  </html>
+  {{end}}
+{{end}}
+
